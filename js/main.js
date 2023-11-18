@@ -4,8 +4,11 @@ const btns = createBtns(secs.length);
 const baseLine = -window.innerHeight / 2;
 const speed = 500;
 let preventEvent = false;
-let isAutoScroll = false;
+let isAutoScroll = true;
+let isBtns = false;
 
+//단기간에 많이 발생하는 이벤트 (resize, scroll) 1초에 60번 반복 (화면주사율)
+//throttle : 이벤트 발생을 강제로 throttling해서 불필요한 반복되는 이벤트 핸들러 함수 호출을 방지
 activation();
 window.addEventListener('scroll', activation);
 window.addEventListener('resize', modifyPos);
