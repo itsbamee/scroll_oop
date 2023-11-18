@@ -4,11 +4,12 @@ const btns = createBtns(secs.length);
 const baseLine = -window.innerHeight / 2;
 const speed = 500;
 let preventEvent = false;
+let isAutoScroll = false;
 
 activation();
 window.addEventListener('scroll', activation);
 window.addEventListener('resize', modifyPos);
-window.addEventListener('mousewheel', autoScroll, { passive: false });
+isAutoScroll && window.addEventListener('mousewheel', autoScroll, { passive: false });
 
 btns.forEach((btn, idx) => {
 	btn.addEventListener('click', (e) => {
