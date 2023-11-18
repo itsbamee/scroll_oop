@@ -21,6 +21,8 @@ window.addEventListener('scroll', () => {
 	});
 });
 
-btns[idx].addEventListener('click', () => {
-	window.scrollTo({ top: main.children[idx].offsetTop, behavior: 'smooth' });
+btns.forEach((btn, idx) => {
+	btn.addEventListener('click', () => {
+		new Anime(window, { scroll: secs[idx].offsetTop }, { duration: 500, easeType: 'ease1' });
+	});
 });
