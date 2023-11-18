@@ -7,10 +7,16 @@
 const [main, ul] = document.body.children;
 const secs = main.querySelectorAll('section');
 const btns = ul.querySelectorAll('li');
-//스크롤이 활성화되는 기준점 변경 위치값
 const baseLine = -window.innerHeight / 2;
+const speed = 500;
 
-window.addEventListener('scroll', () => {
+window.addEventListener('scroll', activation);
+
+btns.forEach((btn, idx) => {
+	btn.addEventListener('click', () => moveScroll(idx, speed));
+});
+
+function activation() {
 	const scroll = window.scrollY;
 
 	secs.forEach((_, idx) => {
@@ -19,10 +25,8 @@ window.addEventListener('scroll', () => {
 			btns[idx].classList.add('on');
 		}
 	});
-});
+}
 
-btns.forEach((btn, idx) => {
-	btn.addEventListener('click', () => {
-		new Anime(window, { scroll: secs[idx].offsetTop }, { duration: 500, easeType: 'ease1' });
-	});
-});
+function moveScroll(idx, speed) {
+	new Anime(window, { scroll: secs[idx].offsetTop }, { duration: speed, easeType: 'ease1' });
+}
