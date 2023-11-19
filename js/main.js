@@ -18,20 +18,21 @@ isAutoScroll && window.addEventListener('mousewheel', autoScroll, { passive: fal
 //커스텀 스크롤 모션
 window.addEventListener('scroll', () => {
 	const scroll = window.scrollY;
-	//currentPos => 세번째 섹션이 활성화되는 세로 위치지점
-	const currentPos = secs[2].offsetTop - window.innerHeight / 2;
-	//modifiedScroll = 현재 스크롤 값에서 해당 세로 위치값을 뺀 스크롤 값 (해당 영역에 도 달하자마자 다시 0부터 증가되는 보정된 스크롤)
-	let modifiedScroll = (scroll - currentPos) * 4;
+	//modifiedScroll = 스크롤되는 현재 baseLine이 적용된 세번째 섹션 위치값을 빼서
+	//해당 영역에서부터 0으로 바뀌는 보정값
+	//현재 동적으로 바뀌고있는 modifiedScroll값은 기존 섹션위치에서 baseLine을 빼준 것 만큼 더해줘야함
+	let modifiedScroll = (scroll - secs[2].offsetTop - baseLine) * 4;
 
-	//스크롤이 세번째 섹션의 활성화 영역에 도달할 때부터 path의 스타일값 연동 시작
-	if (scroll >= currentPos) {
-		path.style.strokeDashoffset = path_len - modifiedScroll;
-		//modifiedScroll값이 path_len보다 커지면 스타일의 offset값이 음수로 빠지게 되면서 빈공간이 보이게 되므로
-		//해당값이 path_len보다 커지는 순간에 값을 0으로 초기화
+	//세번째 섹션이 활성화되는 스크롤 지점을 기존 baseLine(-임)값 만큼 위로 빼서 끌어올린 것
+	if (scroll >= secs[2].offsetTop + baseLine) {
+		//박스 활성호되는 영역 도달시 path에 modifiedScroll값 연동 시작됨
+		//modifiedPos값이 음수로 빠지게 되면 무조건 값을 0으로 고정
 		modifiedScroll >= path_len && (modifiedScroll = path_len);
+		path.style.strokeDashoffset = path_len - modifiedScroll;
 	} else {
-		//스크롤 값이 활성화 스크롤 위치보다 적어지면 offset값을 0으로 초기화
-		path.style.strokeDashoffset = 0;
+		//세번째 섹션영역에 도달하기 전에는 전체 path길이만큼 strokeDashoffset값을 적용해서 선이 안보이는 상태로 유지
+		//0을 주게되면 선이 전체가 보이는 상태이기 때문에 안됨
+		path.style.strokeDashoffset = path_len;
 	}
 });
 
