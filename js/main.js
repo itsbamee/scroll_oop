@@ -18,22 +18,16 @@ isAutoScroll && window.addEventListener('mousewheel', autoScroll, { passive: fal
 //커스텀 스크롤 모션
 window.addEventListener('scroll', () => {
 	const scroll = window.scrollY;
-	//modifiedScroll = 스크롤되는 현재 baseLine이 적용된 세번째 섹션 위치값을 빼서
-	//해당 영역에서부터 0으로 바뀌는 보정값
-	//현재 동적으로 바뀌고있는 modifiedScroll값은 기존 섹션위치에서 baseLine을 빼준 것 만큼 더해줘야함
 	let modifiedScroll = (scroll - secs[2].offsetTop - baseLine) * 4;
 
-	//세번째 섹션이 활성화되는 스크롤 지점을 기존 baseLine(-임)값 만큼 위로 빼서 끌어올린 것
 	if (scroll >= secs[2].offsetTop + baseLine) {
-		//박스 활성호되는 영역 도달시 path에 modifiedScroll값 연동 시작됨
-		//modifiedPos값이 음수로 빠지게 되면 무조건 값을 0으로 고정
 		modifiedScroll >= path_len && (modifiedScroll = path_len);
 		path.style.strokeDashoffset = path_len - modifiedScroll;
 	} else {
-		//세번째 섹션영역에 도달하기 전에는 전체 path길이만큼 strokeDashoffset값을 적용해서 선이 안보이는 상태로 유지
-		//0을 주게되면 선이 전체가 보이는 상태이기 때문에 안됨
 		path.style.strokeDashoffset = path_len;
 	}
+
+	//미션 - 네번째영역 도달 시 기존 박스를 원래 크기로 축소시키면서 opacity:1로 변경해서 보이도록 스크롤값 연동
 });
 
 btns.forEach((btn, idx) => {
