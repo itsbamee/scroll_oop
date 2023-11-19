@@ -74,11 +74,6 @@ section:nth-of-type(3) .svgBox path {
   stroke-width: 4;
   stroke-dasharray: 1506;
   stroke-dashoffset: 1506;
-  transition: stroke-dashoffset 2s, fill 1.5s 2s;
-}
-section:nth-of-type(3) .svgBox:hover path {
-  stroke-dashoffset: 0;
-  fill: skyblue;
 }
 section:nth-of-type(4) {
   background: lightblue;

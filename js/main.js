@@ -1,5 +1,7 @@
 const main = document.querySelector('main');
 const secs = main.querySelectorAll('section');
+const path = main.querySelector('.svgBox path');
+const path_len = 1506;
 const btns = createBtns(secs.length);
 const baseLine = -window.innerHeight / 2;
 const speed = 500;
@@ -9,12 +11,20 @@ let eventBlocker = null;
 
 activation();
 
-//단지 setTimeout만 적용해서는 이벤트 호출시마다 계속 setTimeout이 초기화되므로 이벤트 방지 불가능
-//setTimeout이 호출되자마자 즉시 만들어지는 return값으로 이벤트를 바로 막아주고
-//setTimeout에 적용된 지연시간 뒤에 다시 return값을 null로 변경함으로써 이벤트 풀어줘야 함
 window.addEventListener('scroll', () => setThrottle(activation, eventBlocker));
 window.addEventListener('resize', () => setThrottle(modifyPos, eventBlocker));
 isAutoScroll && window.addEventListener('mousewheel', autoScroll, { passive: false });
+
+//커스텀 스크롤 모션
+window.addEventListener('scroll', () => {
+	const scroll = window.scrollY;
+	//currentPos => 세번째 섹션이 활성화되는 세로 위치지점
+	const currentPos = secs[2].offsetTop - window.innerHeight / 2;
+	//스크롤이 세번째 섹션의 활성화 영역에 도달할 때부터 path의 스타일값 연동 시작
+	if (scroll >= currentPos) {
+		path.style.strokeDashoffset = path_len - (scroll - currentPos);
+	}
+});
 
 btns.forEach((btn, idx) => {
 	btn.addEventListener('click', (e) => {
