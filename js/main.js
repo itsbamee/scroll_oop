@@ -20,9 +20,18 @@ window.addEventListener('scroll', () => {
 	const scroll = window.scrollY;
 	//currentPos => 세번째 섹션이 활성화되는 세로 위치지점
 	const currentPos = secs[2].offsetTop - window.innerHeight / 2;
+	//modifiedScroll = 현재 스크롤 값에서 해당 세로 위치값을 뺀 스크롤 값 (해당 영역에 도 달하자마자 다시 0부터 증가되는 보정된 스크롤)
+	let modifiedScroll = (scroll - currentPos) * 4;
+
 	//스크롤이 세번째 섹션의 활성화 영역에 도달할 때부터 path의 스타일값 연동 시작
 	if (scroll >= currentPos) {
-		path.style.strokeDashoffset = path_len - (scroll - currentPos);
+		path.style.strokeDashoffset = path_len - modifiedScroll;
+		//modifiedScroll값이 path_len보다 커지면 스타일의 offset값이 음수로 빠지게 되면서 빈공간이 보이게 되므로
+		//해당값이 path_len보다 커지는 순간에 값을 0으로 초기화
+		modifiedScroll >= path_len && (modifiedScroll = path_len);
+	} else {
+		//스크롤 값이 활성화 스크롤 위치보다 적어지면 offset값을 0으로 초기화
+		path.style.strokeDashoffset = 0;
 	}
 });
 
