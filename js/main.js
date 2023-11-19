@@ -24,7 +24,7 @@ btns.forEach((btn, idx) => {
 	});
 });
 
-function setThrottle(func, varName = eventBlocker, delay = 200) {
+function setThrottle(func, varName = eventBlocker, delay = 500) {
 	if (window[varName]) return;
 
 	window[varName] = setTimeout(() => {

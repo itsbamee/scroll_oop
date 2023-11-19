@@ -10,9 +10,54 @@ section {
 	}
 	&:nth-of-type(2) {
 		background: lightgreen;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 40px;
+		perspective: 600px;
+
+		article {
+			width: 20%;
+			height: 40%;
+			background: #fff;
+			transform: rotateY(120deg) translateY(200px);
+			opacity: 0;
+			transition: 0.5s;
+
+			&:nth-of-type(1) {
+				transition-delay: 0s;
+			}
+			&:nth-of-type(2) {
+				transition-delay: 0.1s;
+			}
+			&:nth-of-type(3) {
+				transition-delay: 0.2s;
+			}
+		}
+
+		&.on {
+			article {
+				opacity: 1;
+				transform: rotateY(0) translateY(0);
+			}
+		}
 	}
 	&:nth-of-type(3) {
 		background: lightcoral;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		.svgBox {
+			width: 500px;
+			height: 500px;
+
+			path {
+				fill: skyblue;
+				stroke: #fff;
+				stroke-width: 4;
+			}
+		}
 	}
 	&:nth-of-type(4) {
 		background: lightblue;
