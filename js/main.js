@@ -7,18 +7,15 @@ let preventEvent = false;
 let isAutoScroll = true;
 let eventBlocker = null;
 
-//단기간에 많이 발생하는 이벤트 (resize, scroll) 1초에 60번 반복 (화면주사율)
-//throttle : 이벤트 발생을 강제로 throttling해서 불필요한 반복되는 이벤트 핸들러 함수 호출을 방지
 activation();
 
-//스크롤 이벤트가 발생할 때마다 eventBlocker라는 전역변수에 setTimeout이 리턴하는 1씩 증가하는 값을 담음
+//단지 setTimeout만 적용해서는 이벤트 호출시마다 계속 setTimeout이 초기화되므로 이벤트 방지 불가능
+//setTimeout이 호출되자마자 즉시 만들어지는 return값으로 이벤트를 바로 막아주고
+//setTimeout에 적용된 지연시간 뒤에 다시 return값을 null로 변경함으로써 이벤트 풀어줘야 함
 window.addEventListener('scroll', () => {
 	if (eventBlocker) return;
-	//setTimeout이 실행될때마다 eventBlocker에는 true가 되므로(값이 담겨있다는 뜻)
-	//setTimeout호출동안 0.2s 동안은 activation의 호출을 강제로 막아줌
 	eventBlocker = setTimeout(() => {
 		activation();
-		//setTimeout이 종료되면 eventBlocker값이 null(false)가 되므로 다시 이벤트 호출이 가능해짐
 		eventBlocker = null;
 	}, 200);
 });
