@@ -53,9 +53,27 @@ section {
 			height: 500px;
 
 			path {
-				fill: skyblue;
+				fill: transparent;
 				stroke: #fff;
 				stroke-width: 4;
+				//dasharray값은 선의 빈공간 생성
+				//선의 전체길이가 1506이고, 양 옆의 비가시영역에는 같은 길이만큼 빈 공간이 배치되어 있음
+				stroke-dasharray: 1506;
+				//dashoffset은 선의 시작점 변경
+				//이때 offset으로 기준점을 1506만큼 오른쪽으로 밀어버리면
+				//왼쪽 비가시영역에 있던 빈 공간이 가시영역으로 들어오고
+				//선이 그려져있던 영역은 오른쪽 비가시영역으로 넘어간 상태
+				stroke-dashoffset: 1506;
+				transition: stroke-dashoffset 2s, fill 1.5s 2s;
+				//콤마 연결 시 각 속성에 transition걸기 가능
+			}
+
+			&:hover {
+				//이때 hover시 offset값을 다시 0으로 초기화시키면 오른쪽에 있던 선의 영역이 가시영역으로 들어오면서 선이 그려지는 모션이 추가됨
+				path {
+					stroke-dashoffset: 0;
+					fill: skyblue;
+				}
 			}
 		}
 	}

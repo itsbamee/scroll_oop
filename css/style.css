@@ -69,9 +69,16 @@ section:nth-of-type(3) .svgBox {
   height: 500px;
 }
 section:nth-of-type(3) .svgBox path {
-  fill: skyblue;
+  fill: transparent;
   stroke: #fff;
   stroke-width: 4;
+  stroke-dasharray: 1506;
+  stroke-dashoffset: 1506;
+  transition: stroke-dashoffset 2s, fill 1.5s 2s;
+}
+section:nth-of-type(3) .svgBox:hover path {
+  stroke-dashoffset: 0;
+  fill: skyblue;
 }
 section:nth-of-type(4) {
   background: lightblue;
