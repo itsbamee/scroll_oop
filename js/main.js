@@ -12,14 +12,8 @@ activation();
 //단지 setTimeout만 적용해서는 이벤트 호출시마다 계속 setTimeout이 초기화되므로 이벤트 방지 불가능
 //setTimeout이 호출되자마자 즉시 만들어지는 return값으로 이벤트를 바로 막아주고
 //setTimeout에 적용된 지연시간 뒤에 다시 return값을 null로 변경함으로써 이벤트 풀어줘야 함
-window.addEventListener('scroll', () => {
-	if (eventBlocker) return;
-	eventBlocker = setTimeout(() => {
-		activation();
-		eventBlocker = null;
-	}, 200);
-});
-window.addEventListener('resize', modifyPos);
+window.addEventListener('scroll', () => setThrottle(activation), 200);
+window.addEventListener('resize', () => setThrottle(modifyPos));
 isAutoScroll && window.addEventListener('mousewheel', autoScroll, { passive: false });
 
 btns.forEach((btn, idx) => {
@@ -29,6 +23,15 @@ btns.forEach((btn, idx) => {
 		moveScroll(idx, speed);
 	});
 });
+
+function setThrottle(func, delay = 200) {
+	if (eventBlocker) return;
+
+	eventBlocker = setTimeout(() => {
+		func();
+		eventBlocker = null;
+	}, delay);
+}
 
 function createBtns(num) {
 	const ul = document.createElement('ul');
@@ -54,9 +57,9 @@ function activation() {
 }
 
 function modifyPos() {
-	const active = ul.querySelector('li.on');
+	console.log('modifyPos');
+	const active = document.querySelector('li.on');
 	const active_index = Array.from(btns).indexOf(active);
-	console.log(active_index);
 	window.scrollTo({ top: secs[active_index].offsetTop });
 }
 
