@@ -82,8 +82,8 @@ section:nth-of-type(4) {
   align-items: center;
 }
 section:nth-of-type(4) .box {
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
   background: #fff;
   opacity: 0;
   transform: scale(3);

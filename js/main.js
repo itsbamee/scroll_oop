@@ -2,6 +2,7 @@ const main = document.querySelector('main');
 const secs = main.querySelectorAll('section');
 const path = main.querySelector('.svgBox path');
 const path_len = 1506;
+const box = main.querySelector('.box');
 const btns = createBtns(secs.length);
 const baseLine = -window.innerHeight / 2;
 const speed = 500;
@@ -28,6 +29,13 @@ window.addEventListener('scroll', () => {
 	}
 
 	//미션 - 네번째영역 도달 시 기존 박스를 원래 크기로 축소시키면서 opacity:1로 변경해서 보이도록 스크롤값 연동
+	let modifiedScroll2 = (scroll - secs[3].offsetTop - baseLine) / 500;
+
+	if (scroll >= secs[3].offsetTop + baseLine) {
+		box.style.opacity = 0 + modifiedScroll2;
+		box.style.transform = `scale(${3 - modifiedScroll2 * 2})`;
+	} else {
+	}
 });
 
 btns.forEach((btn, idx) => {
