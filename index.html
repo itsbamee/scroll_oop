@@ -11,11 +11,42 @@
   <script src="js/scroll.js"></script>
   <script>
     window.onload = () => {
-      new MyScroll('.myScroll', {
-        baseLine: -window.innerHeight / 2,
-        speed: 1000,
-        isAutoScroll: true
+      const instance = new MyScroll('.myScroll', {
+        //baseLine: -window.innerHeight / 2,
+        speed: 500,
       });
+
+      const path = document.querySelector('path');
+      console.log(path);
+
+      window.addEventListener('scroll', () => {
+        const scroll = window.scrollY;
+
+
+        //3번째 박스 커스텀 스크롤 모션
+        const sec3 = document.querySelectorAll('.myScroll')[2];
+        const path_len = 1506;
+        const [scrolled, baseLine] = instance.getCurrentScroll(2);
+        let modifiedScroll = scrolled * 6;
+
+        if (scroll >= sec3.offsetTop + baseLine) {
+          modifiedScroll >= path_len && (modifiedScroll = path_len);
+          path.style.strokeDashoffset = path_len - modifiedScroll;
+        } else {
+          path.style.strokeDashoffset = path_len;
+        }
+
+        //4번째 박스 커스텀 스크롤 모션
+        const sec4 = document.querySelectorAll('.myScroll')[2];
+        const box = document.querySelector('.box');
+        let modifiedScroll2 = (scroll - sec4.offsetTop - baseLine) / 500;
+
+        if (scroll >= sec4.offsetTop + baseLine) {
+          box.style.opacity = 0 + modifiedScroll2;
+          box.style.transform = `scale(${3 - modifiedScroll2 * 2})`;
+        } else {
+        }
+      })
     }
   </script>
 </head>

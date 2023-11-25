@@ -96,4 +96,9 @@ class MyScroll {
 			? active_index !== this.secs.length - 1 && this.moveScroll(active_index + 1, this.speed / 2)
 			: active_index !== 0 && this.moveScroll(active_index - 1, this.speed / 2);
 	}
+
+	getCurrentScroll(idx) {
+		this.scrolled = window.scrollY - this.secs[idx].offsetTop + this.baseLine;
+		return [this.scrolled, this.baseLine];
+	}
 }
