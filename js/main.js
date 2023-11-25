@@ -1,8 +1,9 @@
 const main = document.querySelector('main');
 const secs = main.querySelectorAll('section');
-const path = main.querySelector('.svgBox path');
 const box = main.querySelector('.box');
-const path_len = 1506;
+//커스텀 섹션 관련 모션 변수
+// const path = main.querySelector('.svgBox path');
+// const path_len = 1506;
 const btns = createBtns(secs.length);
 const baseLine = -window.innerHeight / 2;
 const speed = 500;
@@ -16,6 +17,8 @@ window.addEventListener('scroll', () => setThrottle(activation, eventBlocker));
 window.addEventListener('resize', () => setThrottle(modifyPos, eventBlocker));
 isAutoScroll && window.addEventListener('mousewheel', autoScroll, { passive: false });
 
+/*
+스크롤시 섹션 커스텀 모션 이벤트 연결
 window.addEventListener('scroll', () => {
 	const scroll = window.scrollY;
 	let modifiedScroll = (scroll - secs[2].offsetTop - baseLine) * 4;
@@ -35,12 +38,11 @@ window.addEventListener('scroll', () => {
 	} else {
 	}
 });
+*/
 
 btns.forEach((btn, idx) => {
 	btn.addEventListener('click', (e) => {
-		//일단 현재 섹션 위치값이 스크롤 위치값과 매칭 되었을 떄에만 아래 조건식을 적용
 		if (window.scrollY === secs[idx].offsetTop) {
-			//버튼이 활성화되어 있거나 혹은 모션중이면 moveScroll 불러오지않고 리턴으로 강제종료
 			if (e.currentTarget.classList.contains('on') || preventEvent) return;
 		}
 
