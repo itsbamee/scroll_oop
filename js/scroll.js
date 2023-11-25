@@ -1,26 +1,25 @@
 class MyScroll {
-	//생성자 만들기
-	constructor() {
-		//모든 전역변수 및 이벤트 넣고 this. 붙이기
-		this.main = document.querySelector('main');
-		this.secs = this.main.querySelectorAll('section');
+	constructor(selector, opt) {
+		if (!selector) return console.error('선택자는 필수 입력사항입니다.');
+
+		const defOpt = { baseLine: 0, speed: 500, isAutoScroll: false };
+		const resultOpt = { ...defOpt, ...opt };
+
+		this.selName = selector;
+		this.secs = document.querySelectorAll(selector);
 		this.btns = this.createBtns(this.secs.length);
-		this.baseLine = -window.innerHeight / 2;
-		this.speed = 500;
+		this.baseLine = resultOpt.baseLine;
+		this.speed = resultOpt.speed;
 		this.preventEvent = false;
-		this.isAutoScroll = true;
+		this.isAutoScroll = resultOpt.isAutoScroll;
 		this.eventBlocker = null;
 
 		this.bindingEvent();
-		//바인딩이벤트 호출
 	}
 
-	//bindingEvent만들기 (거의공식)
-	//this붙이는 것 : 생성자 안쪽에 this활용되는 것에만 this붙이면됨
 	bindingEvent() {
 		this.activation();
-		//화살표함수로 감싸줘야 함
-		//내부적으로 this 인스턴스객체의 변경을 막아주려면 무조건 화살표함수로 warpping처리
+		//내부적으로 this 인스턴스객체의 변형을 막아주려면 무조건 화살표함수로 wrapping처리
 		window.addEventListener('scroll', () =>
 			this.setThrottle(() => this.activation(), this.eventBlocker)
 		);
@@ -46,7 +45,7 @@ class MyScroll {
 		if (window[varName]) return;
 
 		window[varName] = setTimeout(() => {
-			func && func(); //func값이 있을때만 func실행
+			func && func();
 			window[varName] = null;
 		}, delay);
 	}
@@ -90,7 +89,7 @@ class MyScroll {
 
 	autoScroll(e) {
 		e.preventDefault();
-		const active = this.main.querySelector('section.on');
+		const active = document.querySelector(`${this.selName}.on`); //.myScroll.on
 		const active_index = Array.from(this.secs).indexOf(active);
 
 		e.deltaY > 0
