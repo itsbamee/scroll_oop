@@ -1,13 +1,13 @@
 const main = document.querySelector('main');
 const secs = main.querySelectorAll('section');
 const path = main.querySelector('.svgBox path');
-const path_len = 1506;
 const box = main.querySelector('.box');
+const path_len = 1506;
 const btns = createBtns(secs.length);
 const baseLine = -window.innerHeight / 2;
 const speed = 500;
 let preventEvent = false;
-let isAutoScroll = true;
+let isAutoScroll = false;
 let eventBlocker = null;
 
 activation();
@@ -16,7 +16,6 @@ window.addEventListener('scroll', () => setThrottle(activation, eventBlocker));
 window.addEventListener('resize', () => setThrottle(modifyPos, eventBlocker));
 isAutoScroll && window.addEventListener('mousewheel', autoScroll, { passive: false });
 
-//커스텀 스크롤 모션
 window.addEventListener('scroll', () => {
 	const scroll = window.scrollY;
 	let modifiedScroll = (scroll - secs[2].offsetTop - baseLine) * 4;
@@ -28,7 +27,6 @@ window.addEventListener('scroll', () => {
 		path.style.strokeDashoffset = path_len;
 	}
 
-	//미션 - 네번째영역 도달 시 기존 박스를 원래 크기로 축소시키면서 opacity:1로 변경해서 보이도록 스크롤값 연동
 	let modifiedScroll2 = (scroll - secs[3].offsetTop - baseLine) / 500;
 
 	if (scroll >= secs[3].offsetTop + baseLine) {
@@ -40,7 +38,12 @@ window.addEventListener('scroll', () => {
 
 btns.forEach((btn, idx) => {
 	btn.addEventListener('click', (e) => {
-		if (e.currentTarget.classList.contains('on') || preventEvent) return;
+		//일단 현재 섹션 위치값이 스크롤 위치값과 매칭 되었을 떄에만 아래 조건식을 적용
+		if (window.scrollY === secs[idx].offsetTop) {
+			//버튼이 활성화되어 있거나 혹은 모션중이면 moveScroll 불러오지않고 리턴으로 강제종료
+			if (e.currentTarget.classList.contains('on') || preventEvent) return;
+		}
+
 		preventEvent = true;
 		moveScroll(idx, speed);
 	});
@@ -60,7 +63,6 @@ function createBtns(num) {
 	Array(num)
 		.fill()
 		.forEach(() => ul.append(document.createElement('li')));
-
 	document.body.append(ul);
 	return document.querySelectorAll('ul li');
 }
@@ -79,10 +81,9 @@ function activation() {
 }
 
 function modifyPos() {
-	console.log('modifyPos');
 	const active = document.querySelector('li.on');
 	const active_index = Array.from(btns).indexOf(active);
-	window.scrollTo({ top: secs[active_index].offsetTop });
+	window.scrollTo({ top: secs[active_index].offsetTop, behavior: 'smooth' });
 }
 
 function moveScroll(idx, speed) {
