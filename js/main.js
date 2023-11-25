@@ -11,11 +11,25 @@ let preventEvent = false;
 let isAutoScroll = false;
 let eventBlocker = null;
 
-activation();
-
+//이벤트 총 5개
+activation(); //버튼활성화
 window.addEventListener('scroll', () => setThrottle(activation, eventBlocker));
+//일정시간 인터벌을 줘서 핸들러함수(이벤트함수) 호출횟수를 강제로 줄임 (쓰로틀)
 window.addEventListener('resize', () => setThrottle(modifyPos, eventBlocker));
 isAutoScroll && window.addEventListener('mousewheel', autoScroll, { passive: false });
+//버튼클릭 이벤트
+btns.forEach((btn, idx) => {
+	btn.addEventListener('click', (e) => {
+		if (window.scrollY === secs[idx].offsetTop) {
+			if (e.currentTarget.classList.contains('on') || preventEvent) return;
+		}
+
+		preventEvent = true;
+		moveScroll(idx, speed);
+	});
+});
+//복잡한 코드일수록 이벤트문 위주로 봐야함 (전반적인 기능파악..)
+//함수도 처음 호출된 순서대로 보는게 중요...
 
 /*
 스크롤시 섹션 커스텀 모션 이벤트 연결
@@ -39,17 +53,6 @@ window.addEventListener('scroll', () => {
 	}
 });
 */
-
-btns.forEach((btn, idx) => {
-	btn.addEventListener('click', (e) => {
-		if (window.scrollY === secs[idx].offsetTop) {
-			if (e.currentTarget.classList.contains('on') || preventEvent) return;
-		}
-
-		preventEvent = true;
-		moveScroll(idx, speed);
-	});
-});
 
 function setThrottle(func, varName = eventBlocker, delay = 500) {
 	if (window[varName]) return;
