@@ -41,7 +41,7 @@ class MyScroll {
 		});
 	}
 
-	setThrottle(func, varName = eventBlocker, delay = 500) {
+	setThrottle(func, varName = eventBlocker, delay = this.speed) {
 		if (window[varName]) return;
 
 		window[varName] = setTimeout(() => {
